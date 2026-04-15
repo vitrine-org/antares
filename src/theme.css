@@ -2,7 +2,7 @@
 
 /* Typescale: 1.414 (Augmented Fourth) */
 
-@font-face {
+/* @font-face {
     font-family: "Bebas Neue";
     src: url('./assets/fonts/BebasNeue-Regular.ttf') format('truetype');
     font-weight: normal;
@@ -12,6 +12,24 @@
     font-family: "Montserrat";
     src: url('./assets/fonts/Montserrat-Regular.ttf') format('truetype');
     font-weight: normal;
+} */
+
+@font-face {
+    font-family: "Metropolis";
+    src: url('./assets/fonts/Metropolis-Black.ttf') format('truetype');
+    font-weight: 900;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url('./assets/fonts/Montserrat-Regular.ttf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url('./assets/fonts/Montserrat-SemiBold.ttf') format('truetype');
+    font-weight: 600;
 }
 
 :root {
@@ -19,62 +37,80 @@
     line-height: 1.2;
 }
 
-.vitrine-container {
+p {
+    margin: 0;
+}
+
+.antares-container {
     position: fixed;
-    width: 100%;
     box-sizing: border-box;
     padding: 3rem;
+    bottom: 3rem;
+    left: 0;
     pointer-events: none;
     font-size: 1rem;
-    color: #f8f8f2;
     user-select: none;
 }
 
-.vitrine-title {
-    font-size: 5.653rem;
-    /* 90px */
-    text-transform: uppercase;
-    line-height: 0.9;
-    font-family: "Bebas Neue", sans-serif;
+.antares-day-of-week {
+    font-family: "Metropolis", sans-serif;
+    font-size: 4.768rem;
+    line-height: 4.768rem;
 }
 
-.vitrine-stats {
-    display: flex;
-    flex-wrap: row;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    font-family: "Bebas Neue", sans-serif;
-}
-
-.vitrine-progress-label {
-    font-size: 1rem;
-    text-transform: uppercase;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 0;
-    margin: 0;
-    padding: 0;
-    white-space: nowrap;
-}
-
-.vitrine-weather {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-    font-size: 1rem;
-    margin-top: 1rem;
+.antares-date {
     font-family: "Montserrat", sans-serif;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    flex-direction: column;
+    font-size: 1.25rem;
+    line-height: 1.25rem;
+    font-weight: 600;
 }
 
-.vitrine-weather p {
-    margin: 0;
-    line-height: 1.5;
+.antares-weather {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.8rem;
+    margin-top: 1.5rem;
 }
 
-.vitrine-weather-last-updated {
-    font-size: 0.707rem;
+.antares-w-icon-container {
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.antares-divider {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    height: 2px;
+    width: 200px;
+}
+
+.antares-stat-single {
+    display: inline-flex;
+    /* wrap */
+    flex-wrap: wrap;
+
+    flex-direction: row;
+    align-items: center;
+    font-size: 0.8rem;
+    gap: 1rem;
+    font-family: "Montserrat", sans-serif;
+
+    min-width: 120px;
+}
+
+.antares-stat-single:not(:first-child) {
+    margin-left: .25rem;
+}
+
+.antares-time {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.563rem;
+    line-height: 1.563rem;
+    margin-top: 1.5rem;
 }
