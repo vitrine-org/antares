@@ -1,9 +1,9 @@
 {
   "id": "dev.vitrine.antares",
   "name": "Antares",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": "Emanuele Frascella",
-  "description": "Bold weekday, ring gauges, weather and a word clock in Metropolis and Montserrat",
+  "description": "Bold weekday, calendar, countdown, note, ring gauges, network, weather and a word clock in Metropolis and Montserrat",
   "homepage": "https://github.com/vitrine-org/antares",
   "minEngine": "2.0.0",
   "fonts": [
@@ -51,6 +51,47 @@
       "preview": "src/wordclock/preview.png",
       "size": { "default": [5, 1], "min": [3, 1], "max": [8, 2] },
       "permissions": []
+    },
+    {
+      "id": "calendar",
+      "name": "Calendar",
+      "description": "“.November” in Metropolis Black over the month, today on an accent tile",
+      "entry": "src/calendar/index.tsx",
+      "settings": "src/calendar/settings.json",
+      "preview": "src/calendar/preview.png",
+      "size": { "default": [3, 3], "min": [3, 3], "max": [6, 6] },
+      "permissions": []
+    },
+    {
+      "id": "countdown",
+      "name": "Countdown",
+      "description": "Days to a date on the accent tile, the event in a sentence",
+      "entry": "src/countdown/index.tsx",
+      "settings": "src/countdown/settings.json",
+      "preview": "src/countdown/preview.png",
+      "size": { "default": [4, 1], "min": [3, 1], "max": [8, 2] },
+      "permissions": []
+    },
+    {
+      "id": "note",
+      "name": "Note",
+      "description": "A note under a bold “.Title”, written with a click",
+      "entry": "src/note/index.tsx",
+      "settings": "src/note/settings.json",
+      "preview": "src/note/preview.png",
+      "size": { "default": [3, 2], "min": [2, 2], "max": [6, 4] },
+      "interactive": true,
+      "permissions": []
+    },
+    {
+      "id": "network",
+      "name": "Network",
+      "description": "Download and upload speed beside accent tiles",
+      "entry": "src/network/index.tsx",
+      "settings": "src/network/settings.json",
+      "preview": "src/network/preview.png",
+      "size": { "default": [4, 1], "min": [3, 1], "max": [8, 2] },
+      "permissions": ["system.network"]
     }
   ]
 }

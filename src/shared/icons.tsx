@@ -20,6 +20,8 @@ const P = {
   battery:
     "M6 7h11a2 2 0 0 1 2 2v.5a.5 .5 0 0 0 .5 .5a.5 .5 0 0 1 .5 .5v3a.5 .5 0 0 1 -.5 .5a.5 .5 0 0 0 -.5 .5v.5a2 2 0 0 1 -2 2h-11a2 2 0 0 1 -2 -2v-6a2 2 0 0 1 2 -2",
   bolt: "M12 9.5l-2 3h4l-2 3",
+  down: "M12 5l0 14 M18 13l-6 6 M6 13l6 6",
+  up: "M12 5l0 14 M18 11l-6 -6 M6 11l6 -6",
 };
 
 export type IconName = keyof typeof P;
