@@ -1,7 +1,23 @@
 import { Index } from "solid-js";
-import { mount, useSettings, useSize, useSystem } from "@vitrine/sdk";
+import { mount, useSettings, useSystem } from "@vitrine/sdk";
 import { Surface, clamp, type Look, useLook } from "../shared/look";
 import { BODY } from "../shared/fonts";
+import { MONTSERRAT_REGULAR as REGULAR, MONTSERRAT_SEMIBOLD as SEMI } from "../shared/metrics";
+import { legible, MIN_VALUE, textWidth, useFit } from "../shared/fit";
+import { Tabular, tabularWidth } from "../shared/num";
+
+// Reference design, in the original theme's CSS pixels: a 46 px ring (radius 20, stroke 6)
+// 1rem from its label and value in Montserrat at 0.8rem (line height 1.2), each stat at least
+// 120 px wide. Spare width spreads the stats out.
+const RING = 46;
+const R = 20;
+const STROKE = 6;
+const GAP = 16;
+const TEXT = 12.8;
+const LH = 1.2;
+const MIN_STAT = 120;
+const SPACING = 4;
+const PAD = { bare: 8, card: 20 };
 
 interface Stat {
   label: string;
@@ -12,14 +28,15 @@ interface Stat {
 /** A full circle from 12 o'clock, clockwise, so a dash of length L fills L of it. */
 const circle = (c: number, r: number) => `M ${c} ${c - r} A ${r} ${r} 0 1 1 ${c} ${c + r} A ${r} ${r} 0 1 1 ${c} ${c - r}`;
 
-function Ring(props: { l: Look; v: number; d: number }) {
-  const stroke = () => props.d * (6 / 46);
-  const r = () => props.d * (20 / 46);
-  const c = () => props.d / 2;
+function Ring(props: { l: Look; v: number; k: number }) {
+  const d = () => RING * props.k;
+  const stroke = () => STROKE * props.k;
+  const r = () => R * props.k;
+  const c = () => d() / 2;
   const len = () => 2 * Math.PI * r();
   const v = () => clamp(props.v, 0, 100) / 100;
   return (
-    <svg width={props.d} height={props.d} viewBox={`0 0 ${props.d} ${props.d}`}>
+    <svg width={d()} height={d()} viewBox={`0 0 ${d()} ${d()}`}>
       {props.l.halo ? <path d={circle(c(), r())} fill="none" stroke={props.l.halo} strokeWidth={stroke() * 1.4} /> : null}
       <path d={circle(c(), r())} fill="none" stroke={props.l.track} strokeWidth={stroke()} />
       <path
@@ -50,7 +67,6 @@ function System() {
     interval: 2,
   });
   const l = useLook(s);
-  const size = useSize();
   const snap = useSystem(["cpu", "memory", "battery", "drives"], clamp(s().interval, 1, 30) * 1000);
 
   const stats = (): Stat[] => {
@@ -73,27 +89,34 @@ function System() {
     return out;
   };
 
-  const pad = () => (l().card ? 12 : 4);
-  // Each stat is a ring plus about 4.5 em of label; the font follows the ring (0.8rem next to 46px in v1).
-  const ring = () => {
-    const n = stats().length;
-    const byW = (size().width - pad() * 2) / n / 2.75;
-    return Math.floor(clamp(Math.min(byW, size().height - pad() * 2), 24, 120));
+  const pad = () => (l().card ? PAD.card : PAD.bare);
+  const label = (k: number) => legible(TEXT, k);
+  const value = (k: number) => legible(TEXT, k, MIN_VALUE);
+  // Every stat as wide as the widest one can get ("100%", "Charging", the longest label).
+  const statW = (k: number) => {
+    const texts = Math.max(
+      ...stats().map((st) => textWidth(REGULAR, st.label, label(k))),
+      tabularWidth(SEMI, "100%", value(k)),
+      textWidth(SEMI, "Charging", value(k)),
+    );
+    return Math.max(MIN_STAT, RING + GAP + texts);
   };
-  const fs = () => Math.max(10, Math.round(ring() * 0.28));
+  const k = useFit((k) => {
+    const n = stats().length;
+    return { w: n * statW(k) + (n - 1) * SPACING + 2 * pad(), h: Math.max(RING, (label(k) + value(k)) * LH) + 2 * pad() };
+  });
 
   return (
-    <Surface l={l()} shadow={s().shadow} style={{ flexDirection: "row", alignItems: "center", padding: pad(), fontFamily: BODY }}>
+    <Surface l={l()} k={k()} style={{ flexDirection: "row", alignItems: "center", padding: pad() * k(), gap: SPACING * k(), fontFamily: BODY }}>
       {(c) => (
         <Index each={stats()}>
           {(st) => (
-            <view style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: Math.round(ring() * 0.35) }}>
-              <Ring l={c} v={st().value} d={ring()} />
-              <text style={{ fontSize: fs(), lineHeight: 1.25, color: c.text, whiteSpace: "nowrap" }}>
-                {st().label}
-                <br />
-                <span style={{ fontWeight: 600 }}>{st().text}</span>
-              </text>
+            <view style={{ flex: 1, minWidth: statW(k()) * k(), flexDirection: "row", alignItems: "center", gap: GAP * k() }}>
+              <Ring l={c} v={st().value} k={k()} />
+              <view style={{ flexDirection: "column" }}>
+                <text style={{ fontSize: label(k()) * k(), lineHeight: LH, color: c.text, whiteSpace: "nowrap" }}>{st().label}</text>
+                <Tabular f={SEMI} text={st().text} size={value(k()) * k()} style={{ fontWeight: 600, lineHeight: LH, color: c.text }} />
+              </view>
             </view>
           )}
         </Index>

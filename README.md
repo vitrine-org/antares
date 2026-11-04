@@ -7,17 +7,17 @@ drawn straight on your wallpaper.
 
 | Widget | Size | |
 |---|---|---|
-| **Date**: the weekday with an accent dot, the date below | 3×1 to 8×3 | ![Date](src/date/preview.png) |
-| **Weather**: today's conditions from [Open-Meteo](https://open-meteo.com), works offline from cache | 4×1 to 8×2 | ![Weather](src/weather/preview.png) |
+| **Date**: the weekday with an accent dot, the date below | 4×1 to 8×3 | ![Date](src/date/preview.png) |
+| **Weather**: today's conditions from [Open-Meteo](https://open-meteo.com), works offline from cache | 5×1 to 8×2 | ![Weather](src/weather/preview.png) |
 | **System**: CPU, RAM, battery and optionally a disk as rings with values | 5×1 to 8×2 | ![System](src/system/preview.png) |
-| **Word clock**: “Time is One.Forty Seven” | 3×1 to 8×2 | ![Word clock](src/wordclock/preview.png) |
+| **Word clock**: “Time is One.Forty Seven” | 4×1 to 8×2 | ![Word clock](src/wordclock/preview.png) |
 
 Every widget has light or dark text, an accent color (or the Windows one), a soft text shadow and
 an optional acrylic card for busy wallpapers.
 
 ## Install
 
-Download `antares-2.1.3.vitrine` from the [latest release](https://github.com/vitrine-org/antares/releases/latest)
+Download `antares-2.2.0.vitrine` from the [latest release](https://github.com/vitrine-org/antares/releases/latest)
 and double-click it. Vitrine adds the widgets to its gallery.
 
 The Vitrine 1 theme lives on the [`v1`](https://github.com/vitrine-org/antares/tree/v1) branch.
@@ -26,7 +26,7 @@ The Vitrine 1 theme lives on the [`v1`](https://github.com/vitrine-org/antares/t
 
 ```sh
 npm install
-npm run pack      # → antares-2.1.3.vitrine
+npm run pack      # → antares-2.2.0.vitrine
 ```
 
 `package.json` points `@vitrine/sdk` at `file:../../vitrine-sdk` for local builds; releases use

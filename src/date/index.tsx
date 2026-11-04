@@ -1,57 +1,74 @@
-import { formatDate, mount, useClock, useSettings, useSize } from "@vitrine/sdk";
-import { Surface, clamp, useLook } from "../shared/look";
+import { formatDate, mount, useClock, useSettings } from "@vitrine/sdk";
+import { Surface, useLook } from "../shared/look";
 import { BODY, DISPLAY } from "../shared/fonts";
+import { METROPOLIS_BLACK as METRO, MONTSERRAT_SEMIBOLD as SEMI } from "../shared/metrics";
+import { bearings, flexAlign, legible, textWidth, useFit } from "../shared/fit";
 
 // The original themes are English: dates are never translated.
 const EN = "en-US";
 
-// Metropolis Black is wide: about 0.6 em per lowercase glyph.
-const GLYPH = 0.6;
+// Reference design, in the original theme's CSS pixels: the weekday in Metropolis Black at
+// 4.768rem after an accent dot, the date in Montserrat SemiBold at 1.25rem right below, both
+// with a line height equal to the font size.
+const BIG = 76.3;
+const SMALL = 20;
+const PAD = { bare: 8, card: 22 };
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const WEEKDAYS = Array.from({ length: 7 }, (_, i) => "." + cap(formatDate(new Date(2024, 0, 1 + i), "dddd", EN)));
+const DATES = Array.from({ length: 12 }, (_, i) => formatDate(new Date(2024, i, 28), "D MMMM", EN));
+
+const ink = (f: typeof METRO, t: string, size: number) => {
+  const [l, r] = bearings(f, t, size);
+  return textWidth(f, t, size) - l - r;
+};
 
 function DateWidget() {
   const s = useSettings({ theme: "dark", accent: "#448AFF", background: "none", shadow: true, align: "left", showDate: true });
   const l = useLook(s);
-  const size = useSize();
   const now = useClock("minute");
 
-  // Longest weekday / date line of the current language, so the size never changes with the day.
-  const longest = (fmt: string, n: number, step: (i: number) => Date) => {
-    let w = "";
-    for (let i = 0; i < n; i++) {
-      const t = formatDate(step(i), fmt, EN);
-      if (t.length > w.length) w = t;
-    }
-    return w;
-  };
-  const widest = () => longest("dddd", 7, (i) => new Date(2024, 0, 1 + i)).length;
-  const widestDate = () => longest("D MMMM YYYY", 12, (i) => new Date(2024, i, 28)).length;
-
-  const day = () => cap(formatDate(now(), "dddd", EN));
+  const day = () => "." + cap(formatDate(now(), "dddd", EN));
   const date = () => formatDate(now(), "D MMMM YYYY", EN);
-  const pad = () => (l().card ? 16 : 6);
-  const big = () => {
-    const avail = size().width - pad() * 2;
-    const byDay = avail / ((widest() + 1.5) * GLYPH);
-    const byDate = s().showDate ? avail / (widestDate() * GLYPH * 0.262 + 0.2) : Infinity;
-    const byW = Math.min(byDay, byDate);
-    const byH = (size().height - pad() * 2) / (s().showDate ? 1.32 : 1.05);
-    return Math.floor(clamp(Math.min(byW, byH), 18, 200));
+  const year = () => formatDate(now(), "YYYY", EN);
+  const pad = () => (l().card ? PAD.card : PAD.bare);
+  // The weekday's line box starts above the capitals: crop it so the padding is optical.
+  const top = (METRO.cap / 1000 - 0.8) * BIG;
+
+  // Sized for the longest weekday and date, so the text never changes size with the day.
+  const k = useFit((k) => {
+    const small = legible(SMALL, k);
+    const w = Math.max(...WEEKDAYS.map((t) => ink(METRO, t, BIG)), s().showDate ? Math.max(...DATES.map((t) => ink(SEMI, `${t} ${year()}`, small))) : 0);
+    return { w: w + 2 * pad(), h: BIG + top + (s().showDate ? small : 0) + 2 * pad() };
+  });
+  const big = () => BIG * k();
+  const small = () => legible(SMALL, k()) * k();
+  const margins = (f: typeof METRO, t: string, size: number) => {
+    const [bl, br] = bearings(f, t, size);
+    return { marginLeft: -bl, marginRight: -br };
   };
-  const small = () => Math.max(11, Math.round(big() * 0.262));
-  const align = () => (s().align === "right" ? "flex-end" : s().align === "center" ? "center" : "flex-start");
 
   return (
-    <Surface l={l()} shadow={s().shadow} style={{ flexDirection: "column", justifyContent: "center", alignItems: align(), padding: pad() }}>
+    <Surface l={l()} k={k()} style={{ flexDirection: "column", justifyContent: "center", alignItems: flexAlign(s().align), padding: pad() * k() }}>
       {(c) => (
         <>
-          <text style={{ fontFamily: DISPLAY, fontWeight: 900, fontSize: big(), lineHeight: 1, color: c.text, whiteSpace: "nowrap" }}>
+          <text
+            style={{
+              fontFamily: DISPLAY,
+              fontWeight: 900,
+              fontSize: big(),
+              lineHeight: 1,
+              color: c.text,
+              whiteSpace: "nowrap",
+              marginTop: top * k(),
+              ...margins(METRO, day(), big()),
+            }}
+          >
             <span style={{ color: c.accent }}>.</span>
-            {day()}
+            {day().slice(1)}
           </text>
           {s().showDate ? (
-            <text style={{ fontFamily: BODY, fontWeight: 600, fontSize: small(), lineHeight: 1.2, color: c.text, whiteSpace: "nowrap", marginLeft: s().align === "left" ? Math.round(big() * 0.04) : 0 }}>
+            <text style={{ fontFamily: BODY, fontWeight: 600, fontSize: small(), lineHeight: 1, color: c.text, whiteSpace: "nowrap", ...margins(SEMI, date(), small()) }}>
               {date()}
             </text>
           ) : null}

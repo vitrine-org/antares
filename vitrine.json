@@ -1,7 +1,7 @@
 {
   "id": "dev.vitrine.antares",
   "name": "Antares",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "author": "Emanuele Frascella",
   "description": "Bold weekday, ring gauges, weather and a word clock in Metropolis and Montserrat",
   "homepage": "https://github.com/vitrine-org/antares",
@@ -20,7 +20,7 @@
       "entry": "src/date/index.tsx",
       "settings": "src/date/settings.json",
       "preview": "src/date/preview.png",
-      "size": { "default": [4, 2], "min": [3, 1], "max": [8, 3] },
+      "size": { "default": [4, 2], "min": [4, 1], "max": [8, 3] },
       "permissions": []
     },
     {
@@ -30,7 +30,7 @@
       "entry": "src/weather/index.tsx",
       "settings": "src/weather/settings.json",
       "preview": "src/weather/preview.png",
-      "size": { "default": [5, 1], "min": [4, 1], "max": [8, 2] },
+      "size": { "default": [5, 1], "min": [5, 1], "max": [8, 2] },
       "permissions": ["net:api.open-meteo.com", "net:geocoding-api.open-meteo.com"]
     },
     {
@@ -50,7 +50,7 @@
       "entry": "src/wordclock/index.tsx",
       "settings": "src/wordclock/settings.json",
       "preview": "src/wordclock/preview.png",
-      "size": { "default": [5, 1], "min": [3, 1], "max": [8, 2] },
+      "size": { "default": [5, 1], "min": [4, 1], "max": [8, 2] },
       "permissions": []
     }
   ]
