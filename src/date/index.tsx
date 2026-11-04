@@ -2,6 +2,9 @@ import { formatDate, mount, useClock, useSettings, useSize } from "@vitrine/sdk"
 import { Surface, clamp, useLook } from "../shared/look";
 import { BODY, DISPLAY } from "../shared/fonts";
 
+// The original themes are English: dates are never translated.
+const EN = "en-US";
+
 // Metropolis Black is wide: about 0.6 em per lowercase glyph.
 const GLYPH = 0.6;
 
@@ -17,7 +20,7 @@ function DateWidget() {
   const longest = (fmt: string, n: number, step: (i: number) => Date) => {
     let w = "";
     for (let i = 0; i < n; i++) {
-      const t = formatDate(step(i), fmt);
+      const t = formatDate(step(i), fmt, EN);
       if (t.length > w.length) w = t;
     }
     return w;
@@ -25,8 +28,8 @@ function DateWidget() {
   const widest = () => longest("dddd", 7, (i) => new Date(2024, 0, 1 + i)).length;
   const widestDate = () => longest("D MMMM YYYY", 12, (i) => new Date(2024, i, 28)).length;
 
-  const day = () => cap(formatDate(now(), "dddd"));
-  const date = () => formatDate(now(), "D MMMM YYYY");
+  const day = () => cap(formatDate(now(), "dddd", EN));
+  const date = () => formatDate(now(), "D MMMM YYYY", EN);
   const pad = () => (l().card ? 16 : 6);
   const big = () => {
     const avail = size().width - pad() * 2;
