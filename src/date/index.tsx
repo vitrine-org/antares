@@ -13,11 +13,26 @@ function DateWidget() {
   const size = useSize();
   const now = useClock("minute");
 
+  // Longest weekday / date line of the current language, so the size never changes with the day.
+  const longest = (fmt: string, n: number, step: (i: number) => Date) => {
+    let w = "";
+    for (let i = 0; i < n; i++) {
+      const t = formatDate(step(i), fmt);
+      if (t.length > w.length) w = t;
+    }
+    return w;
+  };
+  const widest = () => longest("dddd", 7, (i) => new Date(2024, 0, 1 + i)).length;
+  const widestDate = () => longest("D MMMM YYYY", 12, (i) => new Date(2024, i, 28)).length;
+
   const day = () => cap(formatDate(now(), "dddd"));
   const date = () => formatDate(now(), "D MMMM YYYY");
   const pad = () => (l().card ? 16 : 6);
   const big = () => {
-    const byW = (size().width - pad() * 2) / ((day().length + 0.5) * GLYPH);
+    const avail = size().width - pad() * 2;
+    const byDay = avail / ((widest() + 1.5) * GLYPH);
+    const byDate = s().showDate ? avail / (widestDate() * GLYPH * 0.262 + 0.2) : Infinity;
+    const byW = Math.min(byDay, byDate);
     const byH = (size().height - pad() * 2) / (s().showDate ? 1.32 : 1.05);
     return Math.floor(clamp(Math.min(byW, byH), 18, 200));
   };
