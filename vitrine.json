@@ -1,0 +1,56 @@
+{
+  "id": "dev.vitrine.antares",
+  "name": "Antares",
+  "version": "2.0.0",
+  "author": "Emanuele Frascella",
+  "description": "Bold weekday, ring gauges, weather and a word clock in Metropolis and Montserrat",
+  "homepage": "https://github.com/vitrine-widgets/antares",
+  "minEngine": "2.0.0",
+  "fonts": [
+    "assets/fonts/Metropolis-Black.ttf",
+    "assets/fonts/Montserrat-Regular.ttf",
+    "assets/fonts/Montserrat-SemiBold.ttf"
+  ],
+  "widgets": [
+    {
+      "id": "date",
+      "name": "Date",
+      "description": "The weekday in Metropolis Black with the date below",
+      "entry": "src/date/index.tsx",
+      "settings": "src/date/settings.json",
+      "preview": "src/date/preview.png",
+      "size": { "default": [4, 2], "min": [3, 1], "max": [8, 3] },
+      "permissions": []
+    },
+    {
+      "id": "weather",
+      "name": "Weather",
+      "description": "Today's weather in a sentence beside an accent tile, from Open-Meteo",
+      "entry": "src/weather/index.tsx",
+      "settings": "src/weather/settings.json",
+      "preview": "src/weather/preview.png",
+      "size": { "default": [5, 1], "min": [4, 1], "max": [8, 2] },
+      "permissions": ["net:api.open-meteo.com", "net:geocoding-api.open-meteo.com"]
+    },
+    {
+      "id": "system",
+      "name": "System",
+      "description": "CPU, RAM and battery rings with their values",
+      "entry": "src/system/index.tsx",
+      "settings": "src/system/settings.json",
+      "preview": "src/system/preview.png",
+      "size": { "default": [5, 1], "min": [5, 1], "max": [8, 2] },
+      "permissions": ["system.cpu", "system.memory", "system.battery", "system.drives"]
+    },
+    {
+      "id": "wordclock",
+      "name": "Word clock",
+      "description": "The time in words: “Time is One.Forty Seven”",
+      "entry": "src/wordclock/index.tsx",
+      "settings": "src/wordclock/settings.json",
+      "preview": "src/wordclock/preview.png",
+      "size": { "default": [5, 1], "min": [3, 1], "max": [8, 2] },
+      "permissions": []
+    }
+  ]
+}

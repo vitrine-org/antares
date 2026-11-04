@@ -1,7 +1,0 @@
-{
-  "name": "Antares",
-  "description": "Antares theme for Vitrine inspired by the relative Conky alternative.",
-  "entry": "theme.js",
-  "version": "1.0.0",
-  "author": "Emanuele Frascella"
-}
