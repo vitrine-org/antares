@@ -20,6 +20,7 @@ function Ring(props: { l: Look; v: number; d: number }) {
   const v = () => clamp(props.v, 0, 100) / 100;
   return (
     <svg width={props.d} height={props.d} viewBox={`0 0 ${props.d} ${props.d}`}>
+      {props.l.halo ? <path d={circle(c(), r())} fill="none" stroke={props.l.halo} strokeWidth={stroke() * 1.4} /> : null}
       <path d={circle(c(), r())} fill="none" stroke={props.l.track} strokeWidth={stroke()} />
       <path
         d={circle(c(), r())}

@@ -21,7 +21,7 @@ function Weather() {
     <Surface l={l()} shadow={s().shadow} style={{ flexDirection: "row", alignItems: "center", padding: pad(), gap: Math.round(fs() * 1.25), fontFamily: BODY }}>
       {(c) => (
         <>
-          <view style={{ width: tile(), height: tile(), flexShrink: 0, background: c.accent, alignItems: "center", justifyContent: "center" }}>
+          <view style={{ width: tile(), height: tile(), flexShrink: 0, background: c.accent, alignItems: "center", justifyContent: "center", ...(c.shadow ? { boxShadow: "0 2px 10px rgba(0, 0, 0, 0.28)" } : {}) }}>
             <Icon
               name={d() ? weatherIcon(d()!.code, d()!.isDay) : w.error() ? "off" : "loader"}
               size={Math.round(tile() * 0.66)}
