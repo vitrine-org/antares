@@ -17,7 +17,7 @@ an optional acrylic card for busy wallpapers.
 
 ## Install
 
-Download `antares-2.0.0.vitrine` from the [latest release](https://github.com/vitrine-org/antares/releases/latest)
+Download `antares-2.1.3.vitrine` from the [latest release](https://github.com/vitrine-org/antares/releases/latest)
 and double-click it. Vitrine adds the widgets to its gallery.
 
 The Vitrine 1 theme lives on the [`v1`](https://github.com/vitrine-org/antares/tree/v1) branch.
@@ -26,12 +26,14 @@ The Vitrine 1 theme lives on the [`v1`](https://github.com/vitrine-org/antares/t
 
 ```sh
 npm install
-npm run pack      # → antares-2.0.0.vitrine
+npm run pack      # → antares-2.1.3.vitrine
 ```
 
 `package.json` points `@vitrine/sdk` at `file:../../vitrine-sdk` for local builds; releases use
 `github:vitrine-org/sdk#v2.1.0`. Preview a widget with
 `vitrine render dist system --cells 5x1 --scale 2 --out system.png`.
+
+Regenerate every `src/<widget>/preview.png` after `npm run build` with `py scripts/previews.py` (needs Pillow and `vitrine.exe`): same theme, accent and default size for all widgets, on a transparent background with the text shadow, so the gallery, store and website show them alike on a neutral tile.
 
 ## License
 
